@@ -1,0 +1,15 @@
+import 'package:driveprep/routes/app_pages.dart';
+import 'package:get/get.dart';
+
+class SplashController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    _navigateToOnboarding();
+  }
+
+  void _navigateToOnboarding() async {
+    await Future.delayed(const Duration(seconds: 3));
+    Get.offNamed(Routes.ONBOARDING);
+  }
+}
