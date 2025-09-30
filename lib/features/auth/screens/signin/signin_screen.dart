@@ -12,7 +12,7 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SignInController controller = Get.put(SignInController());
+    final SignInController controller = Get.find<SignInController>();
 
     return Scaffold(
       body: SafeArea(
@@ -128,7 +128,7 @@ class SignInScreen extends StatelessWidget {
                 const SizedBox(height: 14),
                 PrimaryButton(
                   text: 'Sign In',
-                  onPressed: () => Get.toNamed(Routes.LOCATION_ACCESS),
+                  onPressed: controller.signInAndNavigate,
                 ),
                 const SizedBox(height: 24),
                 Row(

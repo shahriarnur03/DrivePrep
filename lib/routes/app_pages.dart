@@ -1,11 +1,14 @@
+import 'package:driveprep/features/auth/controllers/signin_controller.dart';
 import 'package:driveprep/features/auth/controllers/signup_controller.dart';
 import 'package:driveprep/features/auth/screens/forgot_password/forgot_password_screen.dart';
 import 'package:driveprep/features/auth/screens/forgot_password/reset_password_screen.dart';
 import 'package:driveprep/features/auth/screens/forgot_password/verify_code_screen.dart';
 import 'package:driveprep/features/auth/screens/signin/signin_screen.dart';
 import 'package:driveprep/features/auth/screens/signup/signup_screen.dart';
+import 'package:driveprep/features/language/controllers/language_controller.dart';
 import 'package:driveprep/features/language/screens/select_language_screen.dart';
 import 'package:driveprep/features/location/screens/location_access_screen.dart';
+import 'package:driveprep/features/onboarding/controllers/onboarding_controller.dart';
 import 'package:driveprep/features/onboarding/screens/onboarding_screen.dart';
 import 'package:driveprep/features/splash/screens/splash_screen.dart';
 import 'package:get/get.dart';
@@ -23,10 +26,16 @@ class AppPages {
     GetPage(
       name: Routes.ONBOARDING,
       page: () => OnboardingScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<OnboardingController>(() => OnboardingController());
+      }),
     ),
     GetPage(
       name: Routes.SIGNIN,
       page: () => SignInScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<SignInController>(() => SignInController());
+      }),
     ),
     GetPage(
       name: Routes.SIGNUP,
@@ -54,6 +63,9 @@ class AppPages {
     GetPage(
       name: Routes.SELECT_LANGUAGE,
       page: () => SelectLanguageScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<LanguageController>(() => LanguageController());
+      }),
     ),
   ];
 }

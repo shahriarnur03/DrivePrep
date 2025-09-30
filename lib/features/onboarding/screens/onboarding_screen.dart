@@ -10,7 +10,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OnboardingController controller = Get.put(OnboardingController());
+    final OnboardingController controller = Get.find<OnboardingController>();
 
     return Scaffold(
       body: SafeArea(

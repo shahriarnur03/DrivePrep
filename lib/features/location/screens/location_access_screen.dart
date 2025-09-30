@@ -1,30 +1,42 @@
 import 'package:driveprep/common_widgets/primary_button.dart';
 import 'package:driveprep/constants/text_styles.dart';
+import 'package:driveprep/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 class LocationAccessScreen extends StatelessWidget {
   const LocationAccessScreen({super.key});
 
   Future<void> _requestLocationPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      }
-    }
+    LocationPermission permission = await Geolocator.requestPermission();
 
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      Get.toNamed(Routes.SELECT_LANGUAGE);
+    } else if (permission == LocationPermission.deniedForever) {
+      // Show a dialog to open app settings
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Location Permission'),
+          content: const Text(
+              'Location permission is permanently denied. Please go to settings to enable it.'),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => Get.back(),
+            ),
+            TextButton(
+              child: const Text('Open Settings'),
+              onPressed: () {
+                Geolocator.openAppSettings();
+                Get.back();
+              },
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -47,7 +59,8 @@ class LocationAccessScreen extends StatelessWidget {
             Text(
               'Kindly allow us to access your location to\nprovide you with suggestions for nearby\nsalons',
               textAlign: TextAlign.center,
-              style: AppTextStyles.interStyle(weight: FontWeight.w400, color: const Color(0xFF636F85)),
+              style: AppTextStyles.interStyle(
+                  weight: FontWeight.w400, color: const Color(0xFF636F85)),
             ),
             const SizedBox(height: 28),
             PrimaryButton(
@@ -56,12 +69,13 @@ class LocationAccessScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             TextButton(
-              onPressed: () {},
+              onPressed: () => Get.toNamed(Routes.SELECT_LANGUAGE),
               child: Text(
                 'Skip, Not Now',
                 style: AppTextStyles.interStyle(
                     size: 16,
-                    weight: FontWeight.w600, color: const Color(0xFF2D2D2D)),
+                    weight: FontWeight.w600,
+                    color: const Color(0xFF2D2D2D)),
               ),
             ),
           ],
