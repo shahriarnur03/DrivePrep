@@ -60,9 +60,13 @@ class SelectLanguageScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              PrimaryButton(
-                text: 'Continue',
-                onPressed: () {},
+              Obx(
+                () => PrimaryButton(
+                  text: 'Continue',
+                  onPressed: controller.selectedLanguage.value != null
+                      ? () => controller.navigateToDashboard()
+                      : null,
+                ),
               ),
             ],
           ),

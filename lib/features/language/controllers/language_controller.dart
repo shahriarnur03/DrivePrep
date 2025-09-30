@@ -1,4 +1,5 @@
 import 'package:driveprep/features/language/models/language_model.dart';
+import 'package:driveprep/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class LanguageController extends GetxController {
@@ -15,5 +16,11 @@ class LanguageController extends GetxController {
 
   void selectLanguage(Language language) {
     selectedLanguage.value = language;
+  }
+
+  void navigateToDashboard() {
+    if (selectedLanguage.value != null) {
+      Get.offAllNamed(Routes.MAIN_NAVIGATION);
+    }
   }
 }

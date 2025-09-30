@@ -10,4 +10,11 @@ abstract class Routes {
   static const VERIFY_CODE = '/verify-code';
   static const LOCATION_ACCESS = '/location-access';
   static const SELECT_LANGUAGE = '/select-language';
+  static const MAIN_NAVIGATION = '/main-navigation';
+  static const DASHBOARD = '/dashboard';
+  static const DEVICES_LIST = '/devices-list';
+  static const DEVICE_DETAILS = '/device-details';
+  static const ADD_DEVICE = '/add-device';
+  static const UPDATE_DEVICE = '/update-device';
+  static const PARTIAL_UPDATE = '/partial-update';
 }
