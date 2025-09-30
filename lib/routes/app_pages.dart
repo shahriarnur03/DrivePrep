@@ -10,21 +10,24 @@ import 'package:driveprep/features/language/screens/select_language_screen.dart'
 import 'package:driveprep/features/location/screens/location_access_screen.dart';
 import 'package:driveprep/features/onboarding/controllers/onboarding_controller.dart';
 import 'package:driveprep/features/onboarding/screens/onboarding_screen.dart';
-import 'package:driveprep/features/products/controllers/add_device_controller.dart';
-import 'package:driveprep/features/products/controllers/dashboard_controller.dart';
-import 'package:driveprep/features/products/controllers/device_details_controller.dart';
-import 'package:driveprep/features/products/controllers/devices_list_controller.dart';
-import 'package:driveprep/features/products/controllers/main_navigation_controller.dart';
-import 'package:driveprep/features/products/controllers/partial_update_controller.dart';
-import 'package:driveprep/features/products/controllers/update_device_controller.dart';
-import 'package:driveprep/features/products/screens/add_device_screen.dart';
-import 'package:driveprep/features/products/screens/dashboard_screen.dart';
-import 'package:driveprep/features/products/screens/device_details_screen.dart';
-import 'package:driveprep/features/products/screens/devices_list_screen.dart';
-import 'package:driveprep/features/products/screens/main_navigation_screen.dart';
-import 'package:driveprep/features/products/screens/partial_update_screen.dart';
-import 'package:driveprep/features/products/screens/update_device_screen.dart';
 import 'package:driveprep/features/splash/screens/splash_screen.dart';
+
+// Feature imports
+import 'package:driveprep/features/bottom_navbar/controllers/bottom_navbar_controller.dart';
+import 'package:driveprep/features/bottom_navbar/screens/bottom_navbar_screen.dart';
+import 'package:driveprep/features/home/controllers/home_controller.dart';
+import 'package:driveprep/features/home/screens/home_screen.dart';
+import 'package:driveprep/features/devices/controllers/devices_controller.dart';
+import 'package:driveprep/features/devices/screens/devices_screen.dart';
+import 'package:driveprep/features/add_device/controllers/add_device_controller.dart';
+import 'package:driveprep/features/add_device/screens/add_device_screen.dart';
+import 'package:driveprep/features/device_details/controllers/device_details_controller.dart';
+import 'package:driveprep/features/device_details/screens/device_details_screen.dart';
+import 'package:driveprep/features/update_device/controllers/update_device_controller.dart';
+import 'package:driveprep/features/update_device/screens/update_device_screen.dart';
+import 'package:driveprep/features/partial_update/controllers/partial_update_controller.dart';
+import 'package:driveprep/features/partial_update/screens/partial_update_screen.dart';
+
 import 'package:get/get.dart';
 
 part 'app_routes.dart';
@@ -36,9 +39,9 @@ class AppPages {
     GetPage(name: Routes.SPLASH, page: () => SplashScreen()),
     GetPage(
       name: Routes.MAIN_NAVIGATION,
-      page: () => MainNavigationScreen(),
+      page: () => BottomNavbarScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut<MainNavigationController>(() => MainNavigationController());
+        Get.lazyPut<BottomNavbarController>(() => BottomNavbarController());
       }),
     ),
     GetPage(
@@ -74,17 +77,17 @@ class AppPages {
       }),
     ),
     GetPage(
-      name: Routes.DASHBOARD,
-      page: () => DashboardScreen(),
+      name: Routes.HOME,
+      page: () => HomeScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut<DashboardController>(() => DashboardController());
+        Get.lazyPut<HomeController>(() => HomeController());
       }),
     ),
     GetPage(
       name: Routes.DEVICES_LIST,
-      page: () => DevicesListScreen(),
+      page: () => DevicesScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut<DevicesListController>(() => DevicesListController());
+        Get.lazyPut<DevicesController>(() => DevicesController());
       }),
     ),
     GetPage(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:driveprep/features/products/models/device_model.dart';
-import 'package:driveprep/features/products/services/api_service.dart';
+import 'package:driveprep/features/devices/models/device_model.dart';
+import 'package:driveprep/features/devices/services/api_service.dart';
 import 'package:driveprep/routes/app_pages.dart';
 
 class PartialUpdateController extends GetxController {

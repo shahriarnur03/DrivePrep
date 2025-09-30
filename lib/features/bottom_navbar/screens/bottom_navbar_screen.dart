@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:driveprep/features/products/screens/dashboard_screen.dart';
-import 'package:driveprep/features/products/screens/devices_list_screen.dart';
-import 'package:driveprep/features/products/screens/add_device_screen.dart';
-import 'package:driveprep/features/products/controllers/main_navigation_controller.dart';
+import 'package:driveprep/features/home/screens/home_screen.dart';
+import 'package:driveprep/features/devices/screens/devices_screen.dart';
+import 'package:driveprep/features/add_device/screens/add_device_screen.dart';
+import 'package:driveprep/features/bottom_navbar/controllers/bottom_navbar_controller.dart';
 
-class MainNavigationScreen extends StatelessWidget {
-  final controller = Get.put(MainNavigationController());
+class BottomNavbarScreen extends StatelessWidget {
+  final controller = Get.put(BottomNavbarController());
 
-  MainNavigationScreen({super.key});
+  BottomNavbarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class MainNavigationScreen extends StatelessWidget {
       body: Obx(() {
         return IndexedStack(
           index: controller.selectedIndex.value,
-          children: [DashboardScreen(), DevicesListScreen(), AddDeviceScreen()],
+          children: [HomeScreen(), DevicesScreen(), AddDeviceScreen()],
         );
       }),
       bottomNavigationBar: Obx(() {
@@ -63,7 +63,6 @@ class MainNavigationScreen extends StatelessWidget {
           ),
         );
       }),
-      // Floating action button removed as requested
     );
   }
 }

@@ -1,31 +1,31 @@
+import 'package:driveprep/common_widgets/device_card.dart';
+import 'package:driveprep/features/devices/models/device_model.dart';
 import 'package:driveprep/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:driveprep/features/products/controllers/dashboard_controller.dart';
+import 'package:driveprep/features/home/controllers/home_controller.dart';
 
-class DashboardScreen extends StatelessWidget {
-  final controller = Get.put(DashboardController());
+class HomeScreen extends StatelessWidget {
+  final controller = Get.put(HomeController());
 
-  DashboardScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            _buildStatsSection(),
-            Expanded(child: _buildFeaturedDevices()),
-          ],
-        ),
+      body: Column(
+        children: [
+          _buildHeader(),
+          _buildStatsSection(),
+          Expanded(child: _buildFeaturedDevices()),
+        ],
       ),
     );
   }
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+      padding: const EdgeInsets.fromLTRB(20, 70, 20, 30),
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -269,225 +269,49 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget _buildDevicesList() {
-    return ListView(
-      children: [
-        _buildFeaturedDeviceCard(
-          name: 'Apple iPhone 13 Pro',
+    // Create sample devices for demonstration
+    final devices = [
+      DeviceModel(
+        id: '3',
+        name: 'Apple iPhone 13 Pro',
+        data: DeviceData(
           description: 'Flagship smartphone with A15 Bionic chip',
-          color: Colors.blue.shade50,
           price: 999.99,
-          icon: Icons.phone_iphone,
+          color: 'Blue',
+          capacity: 128,
+          year: 2021,
         ),
-        _buildFeaturedDeviceCard(
-          name: 'Samsung Galaxy Z Fold4',
+      ),
+      DeviceModel(
+        id: '5',
+        name: 'Samsung Galaxy Z Fold4',
+        data: DeviceData(
           description: 'Foldable smartphone with large display',
-          color: Colors.green.shade50,
           price: 1799.99,
-          icon: Icons.smartphone_rounded,
+          color: 'Black',
+          capacity: 256,
+          year: 2022,
         ),
-        _buildFeaturedDeviceCard(
-          name: 'Google Pixel 7 Pro',
+      ),
+      DeviceModel(
+        id: '1',
+        name: 'Google Pixel 7 Pro',
+        data: DeviceData(
           description: 'Pure Android experience with great camera',
-          color: Colors.purple.shade50,
           price: 899.99,
-          icon: Icons.phone_android,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFeaturedDeviceCard({
-    required String name,
-    required String description,
-    required Color color,
-    required double price,
-    required IconData icon,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Device image
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Image.asset(
-                  'assets/images/mobile.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-              const SizedBox(width: 16),
-
-              // Device info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 8),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade50,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.blue.shade100),
-                          ),
-                          child: Text(
-                            '\$${price.toStringAsFixed(2)}',
-                            style: TextStyle(
-                              color: Colors.blue.shade800,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 14,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildFeaturePill(
-                          icon: Icons.memory,
-                          text: '128 GB',
-                          color: Colors.purple.shade700,
-                        ),
-                        _buildFeaturePill(
-                          icon: Icons.sd_storage_rounded,
-                          text: '6 GB RAM',
-                          color: Colors.amber.shade700,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () => Get.toNamed(
-                        Routes.DEVICE_DETAILS,
-                        arguments: _getDeviceIdForName(name),
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Colors.blue.shade700,
-                              Colors.blue.shade500,
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Text(
-                          'View Details',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          color: 'Silver',
+          capacity: 128,
+          year: 2022,
         ),
       ),
+    ];
+
+    return ListView.builder(
+      itemCount: devices.length,
+      itemBuilder: (context, index) {
+        return DeviceCard(device: devices[index], showActions: false);
+      },
     );
-  }
-
-  Widget _buildFeaturePill({
-    required IconData icon,
-    required String text,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 12,
-              color: color,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // This function is no longer used as it's been replaced by direct UI in the GestureDetector
-
-  // Helper method to get device ID based on name for demo purposes
-  String _getDeviceIdForName(String name) {
-    // Map device names to IDs from the sample data
-    final Map<String, String> deviceIds = {
-      'Apple iPhone 13 Pro': '3',
-      'Samsung Galaxy Z Fold4': '5',
-      'Google Pixel 7 Pro': '1',
-    };
-
-    return deviceIds[name] ?? '1'; // Default to ID 1 if not found
   }
 
   // Show logout dialog when profile icon is clicked

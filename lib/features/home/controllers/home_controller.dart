@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class DashboardController extends GetxController {
+class HomeController extends GetxController {
   var selectedIndex = 0.obs;
 
   void changeTab(int index) {

@@ -11,7 +11,7 @@ abstract class Routes {
   static const LOCATION_ACCESS = '/location-access';
   static const SELECT_LANGUAGE = '/select-language';
   static const MAIN_NAVIGATION = '/main-navigation';
-  static const DASHBOARD = '/dashboard';
+  static const HOME = '/home';
   static const DEVICES_LIST = '/devices-list';
   static const DEVICE_DETAILS = '/device-details';
   static const ADD_DEVICE = '/add-device';
