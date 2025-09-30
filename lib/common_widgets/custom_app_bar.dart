@@ -35,23 +35,6 @@ class CustomAppBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          if (showBackButton)
-            GestureDetector(
-              onTap: () => Get.back(),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 20,
-                  color: Colors.grey.shade700,
-                ),
-              ),
-            ),
-          if (showBackButton) const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

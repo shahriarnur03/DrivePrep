@@ -6,18 +6,21 @@ import 'package:driveprep/features/devices/services/api_service.dart';
 class AddDeviceController extends GetxController {
   final ApiService _apiService = ApiService();
 
+  // Text controllers for form fields
   final nameController = TextEditingController();
   final colorController = TextEditingController();
   final priceController = TextEditingController();
   final capacityController = TextEditingController();
   final yearController = TextEditingController();
 
+  // State variables
   RxBool isLoading = false.obs;
   RxString error = ''.obs;
   RxBool success = false.obs;
 
   @override
   void onClose() {
+    // Clean up controllers when the controller is closed
     nameController.dispose();
     colorController.dispose();
     priceController.dispose();
@@ -26,7 +29,9 @@ class AddDeviceController extends GetxController {
     super.onClose();
   }
 
+  // Add device method
   Future<void> addDevice() async {
+    // Validate required fields
     if (nameController.text.isEmpty) {
       error.value = 'Device name is required';
       return;
@@ -34,60 +39,51 @@ class AddDeviceController extends GetxController {
 
     try {
       isLoading.value = true;
-      error.value = '';
-      success.value = false;
 
-      // Build the device data object
-      final deviceData = DeviceData();
+      // Create device data
+      final deviceData = DeviceData(
+        color: colorController.text.isEmpty ? null : colorController.text,
+        price: priceController.text.isEmpty
+            ? null
+            : double.tryParse(priceController.text),
+        capacity: capacityController.text.isEmpty
+            ? null
+            : capacityController.text,
+        year: yearController.text.isEmpty
+            ? null
+            : int.tryParse(yearController.text),
+      );
 
-      if (colorController.text.isNotEmpty) {
-        deviceData.color = colorController.text;
-      }
-
-      if (priceController.text.isNotEmpty) {
-        deviceData.price = double.tryParse(priceController.text);
-      }
-
-      if (capacityController.text.isNotEmpty) {
-        deviceData.capacity = capacityController.text;
-      }
-
-      if (yearController.text.isNotEmpty) {
-        deviceData.year = int.tryParse(yearController.text);
-      }
-
-      // Create the device model
+      // Create device model
       final device = DeviceModel(name: nameController.text, data: deviceData);
 
-      // Send the API request
-      final newDevice = await _apiService.addDevice(device);
+      // Send API request
+      await _apiService.addDevice(device);
 
-      // Clear the form on success
-      nameController.clear();
-      colorController.clear();
-      priceController.clear();
-      capacityController.clear();
-      yearController.clear();
+      // Clear form
+      _clearForm();
 
+      // Show success message
       success.value = true;
-
       Get.snackbar(
         'Success',
-        'Device added successfully with ID: ${newDevice.id}',
+        'Device added successfully',
         backgroundColor: Colors.green.withOpacity(0.1),
         colorText: Colors.green,
-        duration: const Duration(seconds: 5),
       );
     } catch (e) {
       error.value = e.toString();
-      Get.snackbar(
-        'Error',
-        'Failed to add device: ${e.toString()}',
-        backgroundColor: Colors.red.withOpacity(0.1),
-        colorText: Colors.red,
-      );
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Helper method to clear form
+  void _clearForm() {
+    nameController.clear();
+    colorController.clear();
+    priceController.clear();
+    capacityController.clear();
+    yearController.clear();
   }
 }

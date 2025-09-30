@@ -1,4 +1,6 @@
 import 'package:driveprep/common_widgets/custom_app_bar.dart';
+import 'package:driveprep/common_widgets/primary_button.dart';
+import 'package:driveprep/features/add_device/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:driveprep/features/add_device/controllers/add_device_controller.dart';
@@ -15,12 +17,10 @@ class AddDeviceScreen extends StatelessWidget {
         return SafeArea(
           child: Column(
             children: [
-              CustomAppBar(
-                title: 'Add New Device',
-                showBackButton: false,
-                
-              ),
+              // App bar
+              CustomAppBar(title: 'Add New Device', showBackButton: true),
 
+              // Form content
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(20),
@@ -43,7 +43,7 @@ class AddDeviceScreen extends StatelessWidget {
                             style: const TextStyle(color: Colors.red),
                           ),
                         ),
-          
+
                       // Success message
                       if (controller.success.value)
                         Container(
@@ -55,42 +55,21 @@ class AddDeviceScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.green.shade200),
                           ),
-                          child: Column(
+                          child: Row(
                             children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.withOpacity(0.2),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.check_rounded,
-                                      color: Colors.green,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  const Text(
-                                    'Device Added Successfully!',
-                                    style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'Your device has been added to the catalog. You can add another device or view all devices.',
-                                style: TextStyle(color: Colors.green),
+                              Icon(Icons.check_circle, color: Colors.green),
+                              SizedBox(width: 12),
+                              Text(
+                                'Device added successfully!',
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
                         ),
-          
+
                       // Form title
                       Text(
                         'Device Information',
@@ -101,9 +80,9 @@ class AddDeviceScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-          
-                      // Form fields
-                      _buildTextField(
+
+                      // Form fields using reusable widget
+                      CustomTextField(
                         controller: controller.nameController,
                         label: 'Device Name',
                         hint: 'Enter device name',
@@ -111,14 +90,16 @@ class AddDeviceScreen extends StatelessWidget {
                         required: true,
                       ),
                       const SizedBox(height: 16),
-                      _buildTextField(
+
+                      CustomTextField(
                         controller: controller.colorController,
                         label: 'Color',
                         hint: 'Enter device color',
                         icon: Icons.color_lens_rounded,
                       ),
                       const SizedBox(height: 16),
-                      _buildTextField(
+
+                      CustomTextField(
                         controller: controller.priceController,
                         label: 'Price',
                         hint: 'Enter device price',
@@ -126,7 +107,8 @@ class AddDeviceScreen extends StatelessWidget {
                         keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: 16),
-                      _buildTextField(
+
+                      CustomTextField(
                         controller: controller.capacityController,
                         label: 'Capacity (GB)',
                         hint: 'Enter storage capacity',
@@ -134,7 +116,8 @@ class AddDeviceScreen extends StatelessWidget {
                         keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: 16),
-                      _buildTextField(
+
+                      CustomTextField(
                         controller: controller.yearController,
                         label: 'Year',
                         hint: 'Enter release year',
@@ -142,41 +125,15 @@ class AddDeviceScreen extends StatelessWidget {
                         keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: 40),
-          
-                      // Submit button
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: controller.isLoading.value
-                              ? null
-                              : controller.addDevice,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue.shade700,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+
+                      // Submit button using PrimaryButton
+                      controller.isLoading.value
+                          ? Center(child: CircularProgressIndicator())
+                          : PrimaryButton(
+                              text: 'Add Device',
+                              onPressed: controller.addDevice,
                             ),
-                            elevation: 0,
-                          ),
-                          child: controller.isLoading.value
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text(
-                                  'Add Device',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                        ),
-                      ),
+
                       const SizedBox(height: 40),
                     ],
                   ),
@@ -186,64 +143,6 @@ class AddDeviceScreen extends StatelessWidget {
           ),
         );
       }),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    required IconData icon,
-    bool required = false,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade800,
-              ),
-            ),
-            if (required)
-              Text(
-                ' *',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red.shade400,
-                ),
-              ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade200),
-          ),
-          child: TextField(
-            controller: controller,
-            keyboardType: keyboardType,
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey.shade400),
-              prefixIcon: Icon(icon, color: Colors.grey.shade600),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

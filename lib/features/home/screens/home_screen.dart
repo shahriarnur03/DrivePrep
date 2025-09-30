@@ -1,5 +1,7 @@
 import 'package:driveprep/common_widgets/device_card.dart';
-import 'package:driveprep/features/devices/models/device_model.dart';
+import 'package:driveprep/common_widgets/empty_state.dart';
+import 'package:driveprep/common_widgets/error_display.dart';
+import 'package:driveprep/common_widgets/loading_indicator.dart';
 import 'package:driveprep/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -262,54 +264,48 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Expanded(child: _buildDevicesList()),
+          Expanded(
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return const LoadingIndicator(
+                  message: 'Loading featured devices...',
+                );
+              }
+
+              if (controller.error.value.isNotEmpty) {
+                return ErrorDisplay(
+                  errorMessage: controller.error.value,
+                  onRetry: controller.fetchFeaturedDevices,
+                  retryButtonText: 'Reload',
+                );
+              }
+
+              if (controller.featuredDevices.isEmpty) {
+                return const EmptyState(
+                  icon: Icons.devices_rounded,
+                  title: 'No Featured Devices',
+                  subtitle: 'Check back later for featured devices',
+                  backgroundColor: Colors.grey,
+                  iconColor: Colors.grey,
+                );
+              }
+
+              return _buildDevicesList();
+            }),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildDevicesList() {
-    // Create sample devices for demonstration
-    final devices = [
-      DeviceModel(
-        id: '3',
-        name: 'Apple iPhone 13 Pro',
-        data: DeviceData(
-          description: 'Flagship smartphone with A15 Bionic chip',
-          price: 999.99,
-          color: 'Blue',
-          capacity: 128,
-          year: 2021,
-        ),
-      ),
-      DeviceModel(
-        id: '5',
-        name: 'Samsung Galaxy Z Fold4',
-        data: DeviceData(
-          description: 'Foldable smartphone with large display',
-          price: 1799.99,
-          color: 'Black',
-          capacity: 256,
-          year: 2022,
-        ),
-      ),
-      DeviceModel(
-        id: '1',
-        name: 'Google Pixel 7 Pro',
-        data: DeviceData(
-          description: 'Pure Android experience with great camera',
-          price: 899.99,
-          color: 'Silver',
-          capacity: 128,
-          year: 2022,
-        ),
-      ),
-    ];
-
     return ListView.builder(
-      itemCount: devices.length,
+      itemCount: controller.featuredDevices.length,
       itemBuilder: (context, index) {
-        return DeviceCard(device: devices[index], showActions: false);
+        return DeviceCard(
+          device: controller.featuredDevices[index],
+          showActions: false,
+        );
       },
     );
   }
