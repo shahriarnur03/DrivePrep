@@ -4,6 +4,7 @@ import 'package:driveprep/constants/text_styles.dart';
 import 'package:driveprep/features/auth/controllers/signup_controller.dart';
 import 'package:driveprep/features/auth/widgets/auth_textfield.dart';
 import 'package:driveprep/common_widgets/primary_button.dart';
+import 'package:driveprep/features/auth/widgets/signup_success_popup.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -217,7 +218,16 @@ class SignupScreen extends StatelessWidget {
               // Signup button
               PrimaryButton(
                 text: 'Create Account',
-                onPressed: controller.signup,
+                onPressed: () {
+                  if (controller.signup()) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const SignupSuccessPopup();
+                      },
+                    );
+                  }
+                },
               ),
 
               const SizedBox(height: 10),

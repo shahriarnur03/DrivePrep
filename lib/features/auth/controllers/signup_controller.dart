@@ -44,27 +44,25 @@ class SignupController extends GetxController {
         passwordController.text.contains(RegExp(r'[0-9]'));
   }
 
-  void signup() {
+  bool signup() {
     if (!validateEmail()) {
       Get.snackbar('Error', 'Please enter a valid email address');
-      return;
+      return false;
     }
     
     if (!validateName()) {
       Get.snackbar('Error', 'Please enter your full name');
-      return;
+      return false;
     }
     
     if (!validatePassword()) {
       Get.snackbar('Error', 'Password must be at least 8 characters with letters and numbers');
-      return;
+      return false;
     }
 
     // TODO: Implement actual signup functionality with your backend
     
-    // For now, just navigate to the next screen or show success
-    Get.snackbar('Success', 'Account created successfully');
-    Get.toNamed('/signin');
+    return true;
   }
 
   @override
