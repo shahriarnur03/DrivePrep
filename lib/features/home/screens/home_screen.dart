@@ -18,7 +18,12 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           // Header section with search bar
-          HomeHeader(onProfileTap: _showLogoutDialog),
+          Obx(
+            () => HomeHeader(
+              onProfileTap: _showLogoutDialog,
+              location: controller.currentLocation.value,
+            ),
+          ),
 
           // Stats section showing API operations
           const StatsSection(),

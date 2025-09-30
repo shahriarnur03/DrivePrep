@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
   final VoidCallback onProfileTap;
+  final String? location;
 
-  const HomeHeader({super.key, required this.onProfileTap});
+  const HomeHeader({super.key, required this.onProfileTap, this.location});
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +36,42 @@ class HomeHeader extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Device Manager',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Shahriar Nur',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    if (location != null && location!.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.white.withOpacity(0.9),
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              location!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white.withOpacity(0.9),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
                 ),
               ),
               GestureDetector(
