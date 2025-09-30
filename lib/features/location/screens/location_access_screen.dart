@@ -21,7 +21,8 @@ class LocationAccessScreen extends StatelessWidget {
         AlertDialog(
           title: const Text('Location Permission'),
           content: const Text(
-              'Location permission is permanently denied. Please go to settings to enable it.'),
+            'Location permission is permanently denied. Please go to settings to enable it.',
+          ),
           actions: [
             TextButton(
               child: const Text('Cancel'),
@@ -53,14 +54,19 @@ class LocationAccessScreen extends StatelessWidget {
             const SizedBox(height: 28),
             Text(
               'Enable Location',
-              style: AppTextStyles.interStyle(size: 20, weight: FontWeight.w700),
+              style: AppTextStyles.interStyle(
+                size: 20,
+                weight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 20),
             Text(
               'Kindly allow us to access your location to\nprovide you with suggestions for nearby\nsalons',
               textAlign: TextAlign.center,
               style: AppTextStyles.interStyle(
-                  weight: FontWeight.w400, color: const Color(0xFF636F85)),
+                weight: FontWeight.w400,
+                color: const Color(0xFF636F85),
+              ),
             ),
             const SizedBox(height: 28),
             PrimaryButton(
@@ -73,9 +79,10 @@ class LocationAccessScreen extends StatelessWidget {
               child: Text(
                 'Skip, Not Now',
                 style: AppTextStyles.interStyle(
-                    size: 16,
-                    weight: FontWeight.w600,
-                    color: const Color(0xFF2D2D2D)),
+                  size: 16,
+                  weight: FontWeight.w600,
+                  color: const Color(0xFF2D2D2D),
+                ),
               ),
             ),
           ],
