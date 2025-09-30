@@ -12,9 +12,24 @@ class ResetPasswordController extends GetxController {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  void resetPassword() {
+  bool resetPassword() {
+    if (passwordController.text.isEmpty || confirmPasswordController.text.isEmpty) {
+      Get.snackbar('Error', 'Please fill in both password fields');
+      return false;
+    }
+
+    if (passwordController.text != confirmPasswordController.text) {
+      Get.snackbar('Error', 'Passwords do not match');
+      return false;
+    }
+
+    if (passwordController.text.length < 8) {
+      Get.snackbar('Error', 'Password must be at least 8 characters long');
+      return false;
+    }
+
     // Add password reset logic here
-    Get.offAllNamed(Routes.SIGNIN);
+    return true;
   }
 
   @override

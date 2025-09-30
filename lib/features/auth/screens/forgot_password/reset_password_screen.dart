@@ -4,6 +4,7 @@ import 'package:driveprep/features/auth/widgets/auth_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:driveprep/features/auth/controllers/reset_password_controller.dart';
+import 'package:driveprep/features/auth/widgets/password_reset_success_popup.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
@@ -98,7 +99,16 @@ class ResetPasswordScreen extends StatelessWidget {
 
               PrimaryButton(
                 text: 'Submit',
-                onPressed: controller.resetPassword,
+                onPressed: () {
+                if (controller.resetPassword()) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const PasswordResetSuccessPopup();
+                    },
+                  );
+                }
+              },
               ),
             ],
           ),
