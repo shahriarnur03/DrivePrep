@@ -57,9 +57,7 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                AuthTextField(
-                  controller: controller.emailController,
-                ),
+                AuthTextField(controller: controller.emailController),
                 const SizedBox(height: 16),
                 Text(
                   'Password',
@@ -70,18 +68,20 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Obx(() => AuthTextField(
-                      controller: controller.passwordController,
-                      isPassword: !controller.isPasswordVisible.value,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          controller.isPasswordVisible.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: controller.togglePasswordVisibility,
+                Obx(
+                  () => AuthTextField(
+                    controller: controller.passwordController,
+                    isPassword: !controller.isPasswordVisible.value,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        controller.isPasswordVisible.value
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
-                    )),
+                      onPressed: controller.togglePasswordVisibility,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 14),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,13 +90,15 @@ class SignInScreen extends StatelessWidget {
                       children: [
                         Transform.translate(
                           offset: const Offset(-10, 0),
-                          child: Obx(() => Checkbox(
-                                value: controller.rememberMe.value,
-                                activeColor: const Color(0xFF1B6EF7),
-                                onChanged: (value) {
-                                  controller.rememberMe.value = value!;
-                                },
-                              )),
+                          child: Obx(
+                            () => Checkbox(
+                              value: controller.rememberMe.value,
+                              activeColor: const Color(0xFF1B6EF7),
+                              onChanged: (value) {
+                                controller.rememberMe.value = value!;
+                              },
+                            ),
+                          ),
                         ),
                         Transform.translate(
                           offset: const Offset(-17, 0),
@@ -126,9 +128,13 @@ class SignInScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 14),
-                PrimaryButton(
-                  text: 'Sign In',
-                  onPressed: controller.signInAndNavigate,
+                Obx(
+                  () => controller.isLoading.value
+                      ? const Center(child: CircularProgressIndicator())
+                      : PrimaryButton(
+                          text: 'Sign In',
+                          onPressed: controller.signInAndNavigate,
+                        ),
                 ),
                 const SizedBox(height: 24),
                 Row(

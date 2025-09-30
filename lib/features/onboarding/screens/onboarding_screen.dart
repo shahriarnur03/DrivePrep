@@ -1,7 +1,7 @@
-import 'package:driveprep/common_widgets/primary_button.dart';
-import 'package:driveprep/constants/text_styles.dart';
 import 'package:driveprep/features/onboarding/controllers/onboarding_controller.dart';
-import 'package:driveprep/features/onboarding/models/onboarding_model.dart';
+import 'package:driveprep/features/onboarding/widgets/navigation_button.dart';
+import 'package:driveprep/features/onboarding/widgets/onboarding_page_content.dart';
+import 'package:driveprep/features/onboarding/widgets/page_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,90 +16,41 @@ class OnboardingScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            // PageView for onboarding content
             Expanded(
               child: PageView.builder(
                 controller: controller.pageController,
                 itemCount: controller.onboardingPages.length,
                 itemBuilder: (context, index) {
-                  final OnboardingItem item = controller.onboardingPages[index];
-                  return OnboardingPageContent(item: item);
+                  return OnboardingPageContent(
+                    item: controller.onboardingPages[index],
+                  );
                 },
               ),
             ),
+
+            // Page indicator dots
             Obx(
-              () => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  controller.onboardingPages.length,
-                  (index) => buildDot(index, controller.currentPage.value),
-                ),
+              () => PageIndicator(
+                pageCount: controller.onboardingPages.length,
+                currentPage: controller.currentPage.value,
               ),
             ),
+
             const SizedBox(height: 40),
+
+            // Navigation button
             Obx(
-              () => Padding(
-                padding: const EdgeInsets.all(24),
-                child: PrimaryButton(
-                  text: controller.currentPage.value ==
-                          controller.onboardingPages.length - 1
-                      ? 'Get Started'
-                      : 'Next',
-                  onPressed: () => controller.nextPage(),
-                ),
+              () => NavigationButton(
+                isLastPage:
+                    controller.currentPage.value ==
+                    controller.onboardingPages.length - 1,
+                onPressed: controller.nextPage,
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildDot(int index, int currentPage) {
-    return Container(
-      height: 10,
-      width: 10,
-      margin: const EdgeInsets.symmetric(horizontal: 5),
-      decoration: BoxDecoration(
-        color: currentPage == index
-            ? const Color(0xFF1B6EF7)
-            : const Color(0xFFCCE2FF),
-        borderRadius: BorderRadius.circular(5),
-      ),
-    );
-  }
-}
-
-class OnboardingPageContent extends StatelessWidget {
-  final OnboardingItem item;
-
-  const OnboardingPageContent({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          // height: 812,
-          width: 375,
-          child: Image.asset(item.imagePath),
-        ),
-        const SizedBox(height: 32),
-        Text(
-          item.title,
-          style: AppTextStyles.figtreeStyle(size: 24, weight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 16),
-        Text(
-          item.description,
-          style: AppTextStyles.interStyle(
-            size: 16,
-            color: const Color(0xFF636F85),
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 }

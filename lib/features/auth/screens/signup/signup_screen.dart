@@ -38,7 +38,13 @@ class SignupScreen extends StatelessWidget {
               const SizedBox(height: 30),
 
               // Header
-              Text('Welcome to Eduline', style: AppTextStyles.interStyle(size: 24, weight: FontWeight.w700),),
+              Text(
+                'Welcome to Eduline',
+                style: AppTextStyles.interStyle(
+                  size: 24,
+                  weight: FontWeight.w700,
+                ),
+              ),
 
               const SizedBox(height: 12),
 
@@ -48,7 +54,8 @@ class SignupScreen extends StatelessWidget {
                   size: 14,
                   weight: FontWeight.w400,
                   color: Colors.grey.shade600,
-                ),),
+                ),
+              ),
 
               const SizedBox(height: 30),
 
@@ -62,43 +69,49 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              AuthTextField(
-                  controller: controller.emailController,
-                ),
+              AuthTextField(controller: controller.emailController),
 
               const SizedBox(height: 16),
 
-              Text('Full Name', style: AppTextStyles.interStyle(
+              Text(
+                'Full Name',
+                style: AppTextStyles.interStyle(
                   size: 14,
                   weight: FontWeight.w500,
                   color: const Color(0xFF0F172A),
-                ),),
-              const SizedBox(height: 10),
-              AuthTextField(
-                  controller: controller.fullNameController,
+                ),
               ),
+              const SizedBox(height: 10),
+              AuthTextField(controller: controller.fullNameController),
 
               const SizedBox(height: 16),
 
               // Password field
-              Text('Password', style: AppTextStyles.interStyle(
-                    size: 14,
-                    weight: FontWeight.w500,
-                    color: const Color(0xFF0F172A),
-                  ),),
+              Text(
+                'Password',
+                style: AppTextStyles.interStyle(
+                  size: 14,
+                  weight: FontWeight.w500,
+                  color: const Color(0xFF0F172A),
+                ),
+              ),
               const SizedBox(height: 10),
-              Obx(() => AuthTextField(
-                      controller: controller.passwordController,
-                      isPassword: !controller.isPasswordVisible.value,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          controller.isPasswordVisible.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: controller.togglePasswordVisibility,
-                      ),
-                    )),
+              Obx(
+                () => AuthTextField(
+                  controller: controller.passwordController,
+                  isPassword: !controller.isPasswordVisible.value,
+                  // Add onChanged callback to update password strength in real-time
+                  onChanged: (value) => controller.checkPasswordStrength(value),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      controller.isPasswordVisible.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: controller.togglePasswordVisibility,
+                  ),
+                ),
+              ),
 
               const SizedBox(height: 8),
 
@@ -107,93 +120,112 @@ class SignupScreen extends StatelessWidget {
                 () => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Password strength bars and text
                     SizedBox(
-                      width: 327,
+                      width: double.infinity,
                       child: Row(
                         children: [
+                          // Strength bars - 70% of width
                           Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: controller.passwordStrength.value >= 1
-                                    ? Colors.blue
-                                    : Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
+                            flex: 7,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          controller.passwordStrength.value >= 1
+                                          ? Colors.blue
+                                          : Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Container(
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          controller.passwordStrength.value >= 2
+                                          ? Colors.blue
+                                          : Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Container(
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          controller.passwordStrength.value >= 3
+                                          ? Colors.blue
+                                          : Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Container(
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          controller.passwordStrength.value >= 4
+                                          ? const Color(0xFF1B6EF7)
+                                          : Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(width: 4),
+
+                          // Strength text - 30% of width, right aligned
                           Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: controller.passwordStrength.value >= 2
-                                    ? Colors.blue
-                                    : Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: controller.passwordStrength.value >= 3
-                                    ? Colors.blue
-                                    : Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: controller.passwordStrength.value >= 4
-                                    ? const Color(0xFF1B6EF7)
-                                    : Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            controller.passwordStrength.value <= 1
-                                ? 'Weak'
-                              : controller.passwordStrength.value == 2
-                                ? 'Medium'
-                                : controller.passwordStrength.value == 3
-                                ? 'Good'
-                                : 'Strong',
-                            style: TextStyle(
-                              color: controller.passwordStrength.value <= 1
-                                  ? Colors.red
+                            flex: 3,
+                            child: Text(
+                              controller.passwordStrength.value <= 1
+                                  ? 'Weak'
                                   : controller.passwordStrength.value == 2
-                                  ? Colors.orange
-                                  : Colors.blue,
-                              fontWeight: FontWeight.w500,
+                                  ? 'Medium'
+                                  : controller.passwordStrength.value == 3
+                                  ? 'Good'
+                                  : 'Strong',
+                              style: TextStyle(
+                                color: controller.passwordStrength.value <= 1
+                                    ? Colors.red
+                                    : controller.passwordStrength.value == 2
+                                    ? Colors.orange
+                                    : Colors.blue,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.right,
                             ),
                           ),
                         ],
                       ),
                     ),
+
                     const SizedBox(height: 12),
+
+                    // Password requirements
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
-                          Icons.check_circle,
+                          Icons.check_circle_outline_rounded,
                           color: controller.validatePassword()
                               ? Colors.green
                               : Colors.grey,
                           size: 18,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             'At least 8 characters with a combination of letters and numbers',

@@ -5,9 +5,21 @@ class SignupController extends GetxController {
   final emailController = TextEditingController();
   final fullNameController = TextEditingController();
   final passwordController = TextEditingController();
-  
+
   final isPasswordVisible = false.obs;
   final passwordStrength = 0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Add listener to password controller
+    passwordController.addListener(_onPasswordChanged);
+  }
+
+  void _onPasswordChanged() {
+    // Update password strength when password changes
+    checkPasswordStrength(passwordController.text);
+  }
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -18,15 +30,15 @@ class SignupController extends GetxController {
       passwordStrength.value = 0;
       return;
     }
-    
+
     // Simple password strength checker
     int strength = 0;
-    
+
     if (password.length >= 8) strength++;
     if (password.contains(RegExp(r'[A-Z]'))) strength++;
     if (password.contains(RegExp(r'[0-9]'))) strength++;
     if (password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) strength++;
-    
+
     passwordStrength.value = strength;
   }
 
@@ -49,24 +61,30 @@ class SignupController extends GetxController {
       Get.snackbar('Error', 'Please enter a valid email address');
       return false;
     }
-    
+
     if (!validateName()) {
       Get.snackbar('Error', 'Please enter your full name');
       return false;
     }
-    
+
     if (!validatePassword()) {
-      Get.snackbar('Error', 'Password must be at least 8 characters with letters and numbers');
+      Get.snackbar(
+        'Error',
+        'Password must be at least 8 characters with letters and numbers',
+      );
       return false;
     }
 
     // TODO: Implement actual signup functionality with your backend
-    
+
     return true;
   }
 
   @override
   void onClose() {
+    // Remove listener before disposing
+    passwordController.removeListener(_onPasswordChanged);
+
     emailController.dispose();
     fullNameController.dispose();
     passwordController.dispose();
