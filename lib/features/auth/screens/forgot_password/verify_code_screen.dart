@@ -39,6 +39,7 @@ class VerifyCodeScreen extends StatelessWidget {
               Text(
                 'Verify Code',
                 style: AppTextStyles.interStyle(size: 24, weight: FontWeight.w700),
+                textAlign: TextAlign.center,
               ),
 
               const SizedBox(height: 12),
@@ -49,7 +50,7 @@ class VerifyCodeScreen extends StatelessWidget {
                   size: 14,
                   weight: FontWeight.w400,
                   color: Colors.grey.shade600,
-                ),
+                ),textAlign: TextAlign.center,
               ),
 
               const SizedBox(height: 40),

@@ -2,7 +2,6 @@ import 'package:driveprep/common_widgets/primary_button.dart';
 import 'package:driveprep/constants/text_styles.dart';
 import 'package:driveprep/features/language/controllers/language_controller.dart';
 import 'package:driveprep/features/language/widgets/language_card.dart';
-import 'package:driveprep/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -47,12 +46,16 @@ class SelectLanguageScreen extends StatelessWidget {
                   color: const Color(0xFF636F85),
                 ),
               ),
-              const SizedBox(height: 30),
+              // const SizedBox(height: 30),
               Expanded(
                 child: ListView.builder(
                   itemCount: controller.languages.length,
                   itemBuilder: (context, index) {
-                    return LanguageCard(language: controller.languages[index]);
+                    final language = controller.languages[index];
+                    return LanguageCard(
+                      key: ValueKey(language.name), // Add a key
+                      language: language,
+                    );
                   },
                 ),
               ),
